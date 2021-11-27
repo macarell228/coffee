@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>612</width>
-    <height>483</height>
+    <width>645</width>
+    <height>413</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,16 +15,41 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTableWidget" name="tableWidget">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>591</width>
-      <height>441</height>
+      <width>621</width>
+      <height>371</height>
      </rect>
     </property>
    </widget>
   </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>645</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>edit or add coffee</string>
+    </property>
+    <addaction name="edit_or_add_coffee"/>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <action name="edit_or_add_coffee">
+   <property name="text">
+    <string>go to form</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
