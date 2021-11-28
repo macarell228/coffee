@@ -1,7 +1,8 @@
 import sys
 import sqlite3
 from PyQt5.Qt import *
-from PyQt5.uic import loadUi
+from mainUI import Ui_MainWindow
+from addEditCoffeeFormUI import Ui_Form
 
 
 class ReadOnlyDelegate(QStyledItemDelegate):
@@ -9,12 +10,12 @@ class ReadOnlyDelegate(QStyledItemDelegate):
         return
 
 
-class Coffee(QMainWindow):
+class Coffee(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
-        loadUi('UI/main.ui', self)
+        self.setupUi(self)
 
-        self.connection = sqlite3.connect('release/data/coffee.sqlite')
+        self.connection = sqlite3.connect('data/coffee.sqlite')
         self.cur = self.connection.cursor()
         self.form = addEditCoffeeForm(self.connection)
         self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
@@ -47,10 +48,10 @@ class Coffee(QMainWindow):
                 self.tableWidget.setItem(i, j, item)
 
 
-class addEditCoffeeForm(QWidget):
+class addEditCoffeeForm(QWidget, Ui_Form):
     def __init__(self, connection):
         super().__init__()
-        loadUi('UI/addEditCoffeeForm.ui', self)
+        self.setupUi(self)
 
         self.titles = ['id', 'gradeOfCoffee', 'roastingDegree', 'coffeeType',
                        'tasteDescription', 'price', 'packageVolume']
