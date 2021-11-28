@@ -12,17 +12,17 @@ class ReadOnlyDelegate(QStyledItemDelegate):
 class Coffee(QMainWindow):
     def __init__(self):
         super().__init__()
-        loadUi('main.ui', self)
+        loadUi('UI/main.ui', self)
 
-        self.connection = sqlite3.connect('coffee.sqlite')
+        self.connection = sqlite3.connect('release/data/coffee.sqlite')
         self.cur = self.connection.cursor()
         self.form = addEditCoffeeForm(self.connection)
         self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.tableWidget.verticalHeader().setVisible(False)
         [self.tableWidget.setItemDelegateForColumn(i, ReadOnlyDelegate(self.tableWidget)) for i in range(7)]
-        self.paste_data()
 
         self.edit_or_add_coffee.triggered.connect(lambda x: self.form.show())
+        self.paste_data()
 
     def paste_data(self):
         for i in range(7):
@@ -50,14 +50,13 @@ class Coffee(QMainWindow):
 class addEditCoffeeForm(QWidget):
     def __init__(self, connection):
         super().__init__()
-        loadUi('addEditCoffeeForm.ui', self)
+        loadUi('UI/addEditCoffeeForm.ui', self)
 
         self.titles = ['id', 'gradeOfCoffee', 'roastingDegree', 'coffeeType',
                        'tasteDescription', 'price', 'packageVolume']
-        self.add_widgets = {self.coffeeType_textEdit, self.gradeOfCoffee_textEdit,
-                            self.roastingDegree_textEdit,
-                            self.taste_DescriptiontextEdit,
-                            self.price_textEdit, self.volume_textEdit}
+        self.add_widgets = [self.gradeOfCoffee_textEdit, self.roastingDegree_textEdit,
+                            self.coffeeType_textEdit, self.taste_DescriptiontextEdit,
+                            self.price_textEdit, self.volume_textEdit]
 
         self.connection = connection
         self.cursor = self.connection.cursor()
@@ -79,8 +78,8 @@ class addEditCoffeeForm(QWidget):
         self.connection.commit()
 
     def add_row(self):
-        self.change_db("INSERT INTO InfoAboutCoffee VALUES (NULL, ?, ?, ?, ?, ?, ?)",
-                       [widget.toPlainText() for widget in self.add_widgets])
+        self.change_db("INSERT INTO InfoAboutCoffee VALUES (?, ?, ?, ?, ?, ?, ?)",
+                       [self.tableWidget.rowCount() + 1] + [widget.toPlainText() for widget in self.add_widgets])
         [widget.clear() for widget in self.add_widgets]
         self.paste_data()
 
